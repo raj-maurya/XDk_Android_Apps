@@ -18,5 +18,34 @@
         android:text="Welcome"
         android:textSize="45dp"
         android:layout_centerHorizontal="true"
-        />
+        android:id="@+id/textView2" />
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add one"
+        android:textSize="20dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginTop="50dp"
+        android:id="@+id/bAdd"/>
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Subtract one"
+        android:textSize="20dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginTop="100dp"
+        android:id="@+id/bSub"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total sum is 0"
+        android:textSize="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:id="@+id/text" />
+
 </RelativeLayout>
