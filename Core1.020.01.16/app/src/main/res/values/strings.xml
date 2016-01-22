@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Core1.0|20.01.16</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
