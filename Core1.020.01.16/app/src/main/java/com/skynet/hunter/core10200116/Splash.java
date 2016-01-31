@@ -15,7 +15,7 @@ public class Splash extends Activity {
     protected void onCreate(Bundle simple_variable) {
         super.onCreate(simple_variable);
         setContentView(R.layout.splash);
-         song = MediaPlayer.create(Splash.this, R.raw.);
+         song = MediaPlayer.create(Splash.this, R.raw.saxophone);
         song.start();
         Thread timer = new Thread() {
             public void run(){
