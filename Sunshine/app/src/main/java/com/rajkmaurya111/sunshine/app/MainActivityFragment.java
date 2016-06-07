@@ -70,10 +70,10 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         String[] forecastArray = {
                 "Today-Sunny - 88/63",
-                "Tommorrow - Foggy - 70/40",
+                "Tomorrow - Foggy - 70/40",
                 "Weds - Cloudy - 72/63",
                 "Thurs - Asteroids - 65/56",
-                "Sat - Help Trapped in Wheater station - 60/51 ",
+                "Sat - Help Trapped in Weather station - 60/51 ",
                 "Sun - Sunny - 80/86"
         };
         List<String> weekForecast = new ArrayList<String>(
