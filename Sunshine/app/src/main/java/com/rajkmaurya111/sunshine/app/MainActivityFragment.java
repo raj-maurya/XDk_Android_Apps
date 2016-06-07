@@ -140,8 +140,8 @@ public class MainActivityFragment extends Fragment {
             final String OWM_LIST = "list";
             final String OWM_WEATHER = "weather";
             final String OWM_TEMPERATURE = "temp";
-            final String OWM_MAX = "max";
-            final String OWM_MIN = "min";
+            final String OWM_MAX = "temp_max";
+            final String OWM_MIN = "temp_min";
             final String OWM_DATETIME = "dt";
             final String OWM_DESCRIPTION = "main";
 
