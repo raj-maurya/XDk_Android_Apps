@@ -37,7 +37,7 @@ import java.lang.Throwable;
  */
 public class MainActivityFragment extends Fragment {
 
-    private ArrayAdapter<String> mForecastAdapter;
+   private ArrayAdapter<String> mForecastAdapter;
     public MainActivityFragment() {
 
     }
@@ -67,29 +67,28 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        String[] forecastArray = {
+
+        String[] data = {
                 "Today-Sunny - 88/63",
                 "Tomorrow - Foggy - 70/40",
                 "Weds - Cloudy - 72/63",
                 "Thurs - Asteroids - 65/56",
-                "Sat - Help Trapped in Weather station - 60/51 ",
+                "Sat - Help Trapped in Weather Station - 60/51 ",
                 "Sun - Sunny - 80/86"
         };
         List<String> weekForecast = new ArrayList<String>(
-                Arrays.asList(forecastArray));
+                Arrays.asList(data));
 
         //making the adapter
 
         mForecastAdapter =
                 new ArrayAdapter<String>(
                         getActivity(),
-
                         R.layout.list_item_forecast,
-
                         R.id.list_item_forecast_textview,
-
                         weekForecast);
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
@@ -99,6 +98,7 @@ public class MainActivityFragment extends Fragment {
 
 
     }
+
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String  LOG_TAG = FetchWeatherTask.class.getSimpleName();
@@ -110,7 +110,7 @@ public class MainActivityFragment extends Fragment {
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
             Date date = new Date(time*1000);
-            SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd");
+            SimpleDateFormat format = new SimpleDateFormat("EEE, MMM dd");
             return format.format(date).toString();
         }
 
@@ -133,22 +133,38 @@ public class MainActivityFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+
+
+
+
+
+
+
+         private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
-            final String OWM_LIST = "list";
-            final String OWM_WEATHER = "weather";
+          //  final String OWN_LIST = "coord"
+           // final String OWM_LIST = "list";
+          //  final String OWM_WEATHER = "weather";
+            final String OWM_LIST = "main";
             final String OWM_TEMPERATURE = "temp";
             final String OWM_MAX = "temp_max";
             final String OWM_MIN = "temp_min";
-            final String OWM_DATETIME = "dt";
-            final String OWM_DESCRIPTION = "main";
+            //final String OWM_DATETIME = "dt";
+          //  final String OWM_DESCRIPTION = "main";
 
-            JSONObject forecastJson = new JSONObject(forecastJsonStr);
-            JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
-            // OWM returns daily forecasts based upon the local time of the city that is being
+
+          JSONObject forecastJson = new JSONObject(forecastJsonStr);
+       //    JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+             String[] module = new String[numDays];
+             for(int i = 0; i < numDays; i++) {
+             String module1 = forecastJson.getJSONObject(OWM_LIST).getString(OWM_TEMPERATURE);
+             String module2 = forecastJson.getJSONObject(OWM_LIST).getString(OWM_MAX);
+             String module3 = forecastJson.getJSONObject(OWM_LIST).getString(OWM_MIN);
+
+             // OWM returns daily forecasts based upon the local time of the city that is being
             // asked for, which means that we need to know the GMT offset to translate this data
             // properly.
 
@@ -156,41 +172,49 @@ public class MainActivityFragment extends Fragment {
             // current day, we're going to take advantage of that to get a nice
             // normalized UTC date for all of our weather.
 
+             module[i] = "day" + " - " + "Max_temp" + module2+ " - " + "Min_temp" +  module3+"   " + "Avg."+ module1;
+         }
+
+        for (String s : module) {
+            Log.v(LOG_TAG, "Forecast entry: " + s);
+        }
+        return module;
 
 
             // now we work exclusively in UTC
 
+         }
 
-            String[] resultStrs = new String[numDays];
-            for(int i = 0; i < weatherArray.length(); i++) {
+           /* String[] resultStrs = new String[numDays];
+            for(int i = 0; i < 2; i++) {
                 // For now, using the format "Day, description, hi/low"
                 String day;
                 String description;
                 String highAndLow;
 
                 // Get the JSON object representing the day
-                JSONObject dayForecast = weatherArray.getJSONObject(i);
+                //JSONObject dayForecast = weatherArray.getJSONObject(i);
 
                 // The date/time is returned as a long.  We need to convert that
                 // into something human-readable, since most people won't read "1400356800" as
                 // "this saturday".
-                long dateTime = dayForecast.getLong(OWM_DATETIME);
+           //     long dateTime = dayForecast.getLong(OWM_MAX);
                 // Cheating to convert this to UTC time, which is what we want anyhow
 
-                day = getReadableDateString(dateTime);
+            //   day = getReadableDateString(dateTime);
 
                 // description is in a child array called "weather", which is 1 element long.
-                JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-                description = weatherObject.getString(OWM_DESCRIPTION);
+          //      JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
+          //      description = weatherObject.getString(OWM_DESCRIPTION);
 
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
-                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-                double high = temperatureObject.getDouble(OWM_MAX);
-                double low = temperatureObject.getDouble(OWM_MIN);
+          //      JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+            //    double high = temperatureObject.getDouble(OWM_MAX);
+              //  double low = temperatureObject.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
-                resultStrs[i] = day + " - " + description + " - " + highAndLow;
+               // highAndLow = formatHighLows(high, low);
+                resultStrs[i] = "day" + " - " + "description" + " - " + "highAndLow";
             }
 
             for (String s : resultStrs) {
@@ -198,7 +222,7 @@ public class MainActivityFragment extends Fragment {
             }
             return resultStrs;
 
-        }
+        } */
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -213,7 +237,7 @@ public class MainActivityFragment extends Fragment {
 
             try {
                 final String FORECAST_BASE_URL =
-                        "http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=1873d577b970348a4b80535da6293743";
+                        "http://api.openweathermap.org/data/2.5/weather?q=94043,uk&appid=1873d577b970348a4b80535da6293743";
 
              //   URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
                 final String QUERY_PARAM = "q";
@@ -252,7 +276,7 @@ reader = new BufferedReader(new InputStreamReader(inputStream));
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-                Log.v(LOG_TAG, "Forecast JSON String" + forecastJsonStr);
+                Log.v(LOG_TAG, "Forecast JSON String " + forecastJsonStr);
             }catch (IOException e){
                 Log.e(LOG_TAG, "Error", e);
 
@@ -270,7 +294,7 @@ reader = new BufferedReader(new InputStreamReader(inputStream));
                 }
             }
             try{
-                return getWeatherDataFromJson(forecastJsonStr, numDays);
+                return (getWeatherDataFromJson(forecastJsonStr, numDays));
             } catch (JSONException e){
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
@@ -278,15 +302,18 @@ reader = new BufferedReader(new InputStreamReader(inputStream));
 
             return null;
         }
+
         @Override
-        protected void onPostExecute(String[] result){
+        protected void onPostExecute(String[] result) {
             if (result!=null){
                 mForecastAdapter.clear();
                 for (String dayForecastStr : result){
                     mForecastAdapter.addAll(dayForecastStr);
                 }
-                // new data recieved from the server
-            }
+
+;            }
+           // super.onPostExecute(result);
+
         }
     }
 }
