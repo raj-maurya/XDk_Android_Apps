@@ -35,11 +35,11 @@ public class SettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         // TODO: Add preferences from XML
-
+//addPrefren
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         // TODO: Add preferences
-       
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
